@@ -1,7 +1,7 @@
 # organized energy tends towards disorganized energy
-
 import numpy as np
 import matplotlib.pyplot as plt
+plt.switch_backend('tkagg')
 
 n = 10
 k = 1e5 # interspring constant
@@ -11,7 +11,7 @@ m = 0.1 # kilograms
 t = 20.0 # seconds
 g = 9.81
 z0 = 0.1 # initial height
-dt = 1e-4 # timestep
+dt = 1e-5 # timestep
 nstep = int(round(t / dt))
 print("number of steps:", nstep)
 z = np.zeros((n, nstep), float)
@@ -28,11 +28,16 @@ for i in range(1, nstep):
     a = f / m
     vz[:, i] = vz[:, i-1] + a * dt
     z[:, i] = z[:, i-1] + vz[:, i]*dt
-print(z)
+print('done')
+
+mean = z.mean(axis=0)
 
 fig, ax = plt.subplots()
-ax.plot(np.arange(0, t, dt), z.mean(axis=0))
-fig.savefig('test.pdf')
-
+ax.plot(np.arange(0,t,dt), mean)
+ax.set_xticks(np.arange(0,20,2))
+ax.set_xlabel("Time")
+ax.set_ylabel("z")
+plt.show()
+fig.savefig('ps1 {} elements {} steps.svg'.format(n, nstep))
 # conceptual problem, why does the code break if dt=1e-2 ?
 # 
